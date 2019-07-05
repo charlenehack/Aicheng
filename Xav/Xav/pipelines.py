@@ -61,11 +61,19 @@ class XavPipeline(object):
                 f1.write(detail)
             print('写入说明完成。')
             print('开始下载种子', torrent_url)
-            data = form_data.format(name=torrent_name)
-            res = requests.post(post_url, data=data, headers=headers)
+            if 'hash' in torrent_url:
+                head = {
+                    'Referer': 'http://82bts.com/tlink.php?hash=' + torrent_name,
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+                }
+                url = 'http://82bts.com/downt.php?ref=' + torrent_name + '&Submit=Download%21'
+                res = requests.get(url, headers=head)
+            else:
+                data = form_data.format(name=torrent_name)
+                res = requests.post(post_url, data=data, headers=headers)
             with open(torrent_path, 'wb') as f2:
                 f2.write(res.content)
-            print('下载种完成', torrent_url)
+            print('下载种子完成', torrent_url)
         else:
             print('文件已存在。')
 

@@ -14,8 +14,8 @@ class XavSpider(Spider):
         res = re.findall('forum-(\d)-(.*?)-tid.htm">... (.*?)</a>', response.text)
         category = res[0][0]
         total_page = res[0][2]
-        #    for page in range(1, int(total_page)+1):
-        for page in range(1, 2):
+        for page in range(1, int(total_page)+1):
+      #  for page in range(1, 100):
             page_url = 'https://xcaoav.com/forum-%s-%s-tid.htm' % (str(category), str(page))
 
             yield Request(url=page_url, callback=self.parse_page, meta={'category': category})
